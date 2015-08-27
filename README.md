@@ -1,4 +1,4 @@
 # pure-javascript-calendar
-Pure Javascript Calendar
+Pure Javascript Calendar with Foundation CSS
 
 Demo www.vilapavia.com.mk/calendar/
