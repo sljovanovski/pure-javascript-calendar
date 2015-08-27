@@ -79,7 +79,7 @@
         visibility: visible;
     }
 }
-@media only screen and (min-width: 40.063em) {
+@media only screen and (min-width: 20.063em) {
     .calendar .medium-1 {
         position: relative;
         width: 14.28571%;
