@@ -5,9 +5,31 @@ var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"
 var smallDayNames = ["Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"];
 var activeYear;
 var activeMonth;
-
+var events = [];
 
 function init() {
+    /* var event = {
+     id: 1,
+     title: "pero",
+     description: "descr",
+     date: "Tue Sep 01 2015 00:00:00 GMT+0200 (CEST)"
+     };
+
+     var event2 = {
+     id: 2,
+     title: "bobi",
+     description: "descr",
+     date: "Tue Sep 01 2015 00:00:00 GMT+0200 (CEST)"
+     };
+
+     var event3 = {
+     id: 3,
+     title: "pero",
+     description: "descr",
+     date: "Wed Sep 02 2015 00:00:00 GMT+0200 (CEST)"
+     };
+
+     events.push(event, event2, event3);*/
     bindMonth(new Date().getFullYear(), new Date().getMonth());
     activeYear = new Date().getFullYear();
     activeMonth = new Date().getMonth();
@@ -40,11 +62,25 @@ function bindMonth(year, month) {
         currentDate = new Date(year, month, i);
         var d = new Date();
 
+        var eventsForDay = loadEventsForDay(currentDate);
+        var eventLabel = "";
+        if (eventsForDay.length > 0) {
+            for (var j = 0; j < eventsForDay.length; j++) {
+                eventLabel += "<label class='event' " +
+                    "data-date='" + eventsForDay[j].date + "' " +
+                    "data-descr='" + eventsForDay[j].description + '' + "' " +
+                    "data-label='true'" +
+                    "id='" + eventsForDay[j].id + "'" +
+                    "' onclick='return onDayClick(this)" +
+                    "'>" + eventsForDay[j].title + "</label>";
+            }
+        }
+
         /* if current day from weekDays is equel to TODAY - mark as today with CSS class */
         if (currentDate.getTime() === new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime()) {
-            days.push('<div class="small-1 medium-1 large-1 day today pointer" data-date="' + currentDate + '"  onclick="onDayClick(this)">' + currentDate.getDate() + '</div>');
+            days.push('<div class="small-1 medium-1 large-1 day today" id="' + friendlyUrl(currentDate) + '">' + currentDate.getDate() + " <small data-date='" + currentDate + "' onclick='onDayClick(this)' title='Create new'><span class='small right new-event pointer'>+</span></small>" + eventLabel + '</div>');
         } else {
-            days.push('<div class="small-1 medium-1 large-1 day pointer" data-date="' + currentDate + '"  onclick="onDayClick(this)">' + currentDate.getDate() + '</div>');
+            days.push('<div class="small-1 medium-1 large-1 day" id="' + friendlyUrl(currentDate) + '">' + currentDate.getDate() + " <small data-date='" + currentDate + "' onclick='onDayClick(this)' title='Create new'><span class='small right new-event pointer'>+</span></small>" + eventLabel + '</div>');
         }
 
         /* get the days from the previous month */
@@ -61,7 +97,22 @@ function bindMonth(year, month) {
                 /* fill up the days from the previous month */
                 while (remainingDays > 0) {
                     currentDate = new Date(year, prevMonth, daysOfLastMonth);
-                    days.unshift('<div class="small-1 medium-1 large-1 day pointer previous-month" data-date="' + currentDate + '"  onclick="onDayClick(this)">' + currentDate.getDate() + '</div>');
+
+                    eventsForDay = loadEventsForDay(currentDate);
+                    eventLabel = "";
+                    if (eventsForDay.length > 0) {
+                        for (var j = 0; j < eventsForDay.length; j++) {
+                            eventLabel += "<label class='event' " +
+                                "data-date='" + eventsForDay[j].date + "' " +
+                                "data-descr='" + eventsForDay[j].description + '' + "' " +
+                                "data-label='true'" +
+                                "id='" + eventsForDay[j].id + "'" +
+                                "' onclick='return onDayClick(this)" +
+                                "'>" + eventsForDay[j].title + "</label>";
+                        }
+                    }
+
+                    days.unshift('<div class="small-1 medium-1 large-1 day  previous-month" id="' + friendlyUrl(currentDate) + '">' + currentDate.getDate() + " <small data-date='" + currentDate + "' onclick='onDayClick(this)' title='Create new'><span class='small right new-event pointer'>+</span></small>" + eventLabel + '</div>');
                     daysOfLastMonth--;
                     remainingDays--;
                 }
@@ -82,7 +133,20 @@ function bindMonth(year, month) {
 
         do {
             currentDate = new Date(year, month + 1, i);
-            days.push('<div class="mall-1 medium-1 large-1 day pointer next-month" data-date="' + currentDate + '"  onclick="onDayClick(this)">' + currentDate.getDate() + '</div>');
+            eventsForDay = loadEventsForDay(currentDate);
+            eventLabel = "";
+            if (eventsForDay.length > 0) {
+                for (var j = 0; j < eventsForDay.length; j++) {
+                    eventLabel += "<label class='event' " +
+                        "data-date='" + eventsForDay[j].date + "' " +
+                        "data-descr='" + eventsForDay[j].description + '' + "' " +
+                        "data-label='true'" +
+                        "id='" + eventsForDay[j].id + "'" +
+                        "' onclick='return onDayClick(this)" +
+                        "'>" + eventsForDay[j].title + "</label>";
+                }
+            }
+            days.push('<div class="mall-1 medium-1 large-1 day next-month" id="' + friendlyUrl(currentDate) + '">' + currentDate.getDate() + " <small data-date='" + currentDate + "' onclick='onDayClick(this)' title='Create new'><span class='small right new-event pointer'>+</span></small>" + eventLabel + '</div>');
             i++;
         } while (currentDate.getDay() !== 0);
         rows.push("<li class='week'>" + days.join("") + "</li>");
@@ -129,8 +193,24 @@ function nextMonth() {
 }
 
 /* on day click do something */
-function onDayClick(date) {
-    alert("Do something here " + date.dataset.date);
+function onDayClick(selectedDate) {
+    var date = new Date(selectedDate.dataset.date);
+    var day = dayNames[date.getDay()];
+    document.getElementById("titleDay").textContent = day + " " + date.toLocaleDateString();
+    var popup = $('#popup').popup();
+    document.getElementById("btnSave").dataset.date = selectedDate.dataset.date;
+    if (selectedDate.dataset.label) {
+        document.getElementById("btnSave").dataset.label = selectedDate.dataset.label;
+        document.getElementById("btnSave").dataset.eventid = selectedDate.id;
+    }
+    fillPopup(selectedDate);
+    popup.open();
+}
+
+function closePopup() {
+    var popup = $('#popup').popup();
+    clearPopup();
+    popup.close();
 }
 
 /* count the days of the month including Leap Year */
@@ -146,4 +226,102 @@ function countDays(year, month) {
     }
 
     return i - 1;
+}
+
+function onFocus(input) {
+    input.className = "edit-label-focus";
+}
+
+function onFocusOut(input) {
+    input.className = "edit-label";
+}
+
+function resizeTextArea() {
+    var text = document.getElementById("editArea");
+    text.style.height = 'auto';
+    text.style.height = text.scrollHeight + 'px';
+}
+
+function clearPopup() {
+    document.getElementById("editText").value = "";
+    document.getElementById("editArea").value = "";
+    var elm = document.getElementById("btnSave");
+    delete elm.dataset.date;
+    if (elm.dataset.label) {
+        delete elm.dataset.label;
+        delete elm.dataset.eventid;
+    }
+}
+
+function fillPopup(selectedDate) {
+    if (selectedDate.dataset.label) {
+        document.getElementById("editText").value = selectedDate.textContent;
+        document.getElementById("editArea").value = selectedDate.dataset.descr;
+    } else {
+        document.getElementById("editText").value = "";
+        document.getElementById("editArea").value = "";
+    }
+}
+
+function addEvent(selectedDate) {
+    var title = document.getElementById("editText").value;
+    var description = document.getElementById("editArea").value;
+    var date = new Date(selectedDate.dataset.date);
+
+    if (selectedDate.dataset.label) {
+        for (var i = 0; i < events.length; i++) {
+            if (events[i].id === Number(selectedDate.dataset.eventid)) {
+                document.getElementById(selectedDate.dataset.eventid).textContent = title;
+                document.getElementById(selectedDate.dataset.eventid).dataset.descr = description;
+                events[i].title = title;
+                debugger;
+                events[i].description = description;
+                break;
+            }
+        }
+    } else {
+        var event = {
+            id: Number(events.length) + 1,
+            title: title,
+            description: description,
+            date: date
+        };
+        events.push(event);
+        for (var i = 0; i < events.length; i++) {
+            if (events[i].date === event.date) {
+                document.getElementById(friendlyUrl(event.date)).innerHTML += "<label class='event' " +
+                    "data-date='" + event.date + "' " +
+                    "data-descr='" + event.description + '' + "' " +
+                    "data-label='true'" +
+                    "id='" + event.id + "'" +
+                    "' onclick='return onDayClick(this)" +
+                    "'>" + event.title + "</label>";
+            }
+        }
+    }
+    closePopup();
+}
+
+function loadEventsForDay(day) {
+    var eventsForDay = [];
+    for (var i = 0; i < events.length; i++) {
+        if (events[i].date.toString() === day.toString()) {
+            eventsForDay.push(events[i]);
+        }
+    }
+    return eventsForDay;
+}
+
+function onEventClick(event) {
+    var date = new Date(event.dataset.date);
+    var day = dayNames[date.getDay()];
+    document.getElementById("titleDay").textContent = day + " " + date.toLocaleDateString();
+    document.getElementById("editText").value = event.value;
+    document.getElementById("editArea").value = event.dataset.descr;
+    var popup = $('#popup').popup();
+    popup.open();
+}
+
+function friendlyUrl(text) {
+    return text.toString().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "-").replace(/^-+|-+$/g, '');
 }

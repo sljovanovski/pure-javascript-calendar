@@ -2,13 +2,18 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendar</title>
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/normalize.css"/>
     <link rel="stylesheet" href="css/foundation.calendar.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
+    <script src="js/jquery.js" type="text/javascript"></script>
+    <script src="node_modules/simple-popup/simple-popup.js" type="text/javascript"></script>
     <script src="js/app.js" type="text/javascript"></script>
     <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/popup.css"/>
+
 </head>
 <body onload="init()">
 <div class="row">
@@ -17,11 +22,60 @@
             <li class="title">
                 <span class="pointer left text-left" onclick="prevMonth()"><i class="fa fa-arrow-left"></i></span>
                 <span id="monthName"></span>
-                <span class="pointer right text-right" onclick="nextMonth()"><i class="fa fa-arrow-right"></i></span>
+                    <span class="pointer right text-right" onclick="nextMonth()"><i
+                            class="fa fa-arrow-right"></i></span>
             </li>
             <li class="day-header" id="dayHeader"></li>
             <span id="weeks"></span>
         </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="large-12">
+        <div class="popup-dialog">
+            <div id="popup" class="popup-wrapper hide">
+                <div class="popup-title">
+                    <button type="button" class="popup-close">×</button>
+                    <h3 id="titleDay"></h3>
+                </div>
+                <div class="popup-body">
+                    <article>
+                        <div class="large-12">
+
+                            <label>Title:</label>
+                            <input type="text" class="edit-label"
+                                   onfocus="return onFocus(this)"
+                                   onblur="return onFocusOut(this)"
+                                   placeholder="enter a title for the event"
+                                   id="editText"
+                                   title="Click to edit"/>
+
+                        </div>
+                    </article>
+                    <article>
+                        <div class="large-12">
+                            <labeL>Description:</labeL>
+                    <textarea class="edit-label"
+                              onfocus="return onFocus(this)"
+                              onblur="return onFocusOut(this)"
+                              onkeyup="return resizeTextArea()"
+                              placeholder="enter the description for the event"
+                              id="editArea"
+                              style="min-height: 150px;"
+                              title="Click to edit"></textarea>
+                        </div>
+                    </article>
+                    <div class="large-12 text-right ip-popup-action-buttons">
+                        <div class="right">
+                            <button class="button success small" id="btnSave" onclick="return  addEvent(this)">Save
+                            </button>
+                            <button class="button alert small" onclick="return closePopup()">Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

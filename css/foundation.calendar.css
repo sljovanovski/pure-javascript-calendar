@@ -1,45 +1,51 @@
 ﻿/* Responsive Calendar for Foundation */
-.calendar { 
-    margin-left: 0;
-    margin-bottom: 1.25rem;
-    padding-bottom: 1px;
+.calendar {
+    margin-left: 0px;
     border-bottom: 2px solid #2ba6cb;
 }
-    .calendar * {
-        list-style: none;
-        line-height: 1;
-    }
-    .calendar .title { 
-        text-align: center; 
-        font-size: 1.6875rem;
-        margin-top: 7px;
-        margin-bottom: 7px;
-    }
-    .calendar .week {
-        padding: 0px;
-        margin: 0px;
-    }
-    .calendar .week:before, .calendar .week:after {
-        content: " ";
-        display: table; 
-    }
-    .calendar .week:after {
-        clear: both; 
-    }
+
+.calendar * {
+    list-style: none;
+    line-height: 1;
+}
+
+.calendar .title {
+    text-align: center;
+    font-size: 1.6875rem;
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+
+.calendar .week {
+    padding: 0px;
+    margin: 0px;
+}
+
+.calendar .week:before, .calendar .week:after {
+    content: " ";
+    display: table;
+}
+
+.calendar .week:after {
+    clear: both;
+}
+
 .calendar .day,
 .calendar .days {
-  position: relative;
-  padding: 0.3rem 0.39375rem;
-  width: 100%;
-  min-height: 6rem;
-  float: left;
+    position: relative;
+    padding: 0.3rem 0.39375rem;
+    width: 100%;
+    min-height: 6rem;
+    float: left;
 }
+
 .calendar .day-header {
-    background-color: #2ba6cb; 
+    background-color: #2ba6cb;
 }
+
 .calendar .day-header .day,
-.calendar .day-header .days { 
-    background-color: #2ba6cb; 
+.calendar .day-header .days {
+    background-color: #2ba6cb;
     color: white;
     text-align: center;
     min-height: 0.5rem;
@@ -62,6 +68,7 @@
 .day.today, .days.today {
     background: #76df9d;
 }
+
 .day.today:hover, .days.today:hover {
     background: #65ce8c;
 }
@@ -70,6 +77,7 @@
     .calendar .small-1 {
         position: relative;
         width: 14.28571%;
+        border: 1px solid #f2f2f2;
     }
 
     .calendar .day-header .small-1,
@@ -77,12 +85,15 @@
     .small-1.next-month {
         display: block;
         visibility: visible;
+        border: 1px solid #f2f2f2;
     }
 }
+
 @media only screen and (min-width: 20.063em) {
     .calendar .medium-1 {
         position: relative;
         width: 14.28571%;
+        border: 1px solid #f2f2f2;
     }
 
     .calendar .day-header .medium-1,
@@ -90,12 +101,15 @@
     .medium-1.next-month {
         display: block;
         visibility: visible;
+        border: 1px solid #f2f2f2;
     }
 }
+
 @media only screen and (min-width: 64.063em) {
     .calendar .large-1 {
         position: relative;
         width: 14.28571%;
+        border: 1px solid #f2f2f2;
     }
 
     .calendar .day-header .large-1,
@@ -103,8 +117,10 @@
     .large-1.next-month {
         display: block;
         visibility: visible;
+        border: 1px solid #f2f2f2;
     }
 }
+
 @media only screen and (min-width: 90.063em) {
     .calendar .xlarge-1 {
         position: relative;
@@ -118,6 +134,7 @@
         visibility: visible;
     }
 }
+
 @media only screen and (min-width: 120.063em) {
     .calendar .xxlarge-1 {
         position: relative;
